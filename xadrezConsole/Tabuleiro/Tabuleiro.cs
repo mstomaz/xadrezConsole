@@ -11,9 +11,34 @@ public class Tabuleiro(int linhas, int colunas)
         return Pecas![linha, coluna];
     }
 
+    public Peca RetornarPeca(Posicao pos)
+    {
+        return Pecas![pos.Linha, pos.Coluna];
+    }
+
+    public bool ExistePeca(Posicao pos)
+    {
+        ValidarPosicao(pos);
+        return RetornarPeca(pos) != null;
+    }
+
     public void ColocarPeca(Peca p, Posicao pos)
     {
+        if (ExistePeca(pos))
+            throw new TabuleiroException("Ja existe uma peca nessa posicao!");
+
         Pecas![pos.Linha, pos.Coluna] = p;
         p.Posicao = pos;
+    }
+
+    private bool PosicaoValida(Posicao pos)
+    {
+        return pos.Linha >= 0 && pos.Linha < Linhas && pos.Coluna >= 0 && pos.Coluna < Colunas;
+    }
+
+    public void ValidarPosicao(Posicao pos)
+    {
+        if (!PosicaoValida(pos))
+            throw new TabuleiroException("Posicao invalida!");
     }
 }
