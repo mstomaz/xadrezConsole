@@ -8,6 +8,12 @@ public class Tabuleiro(int linhas, int colunas)
 
     public Peca RetornarPeca(int linha, int coluna)
     {
-        return Pecas[linha, coluna];
+        return Pecas![linha, coluna];
+    }
+
+    public void ColocarPeca(Peca p, Posicao pos)
+    {
+        Pecas![pos.Linha, pos.Coluna] = p;
+        p.Posicao = pos;
     }
 }
