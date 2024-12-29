@@ -6,13 +6,26 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Tabuleiro tab = new Tabuleiro(8, 8);
+        try
+        {
+            PartidaDeXadrez partida = new PartidaDeXadrez();
 
-        tab.ColocarPeca(new Rei(tab, Cor.Preta), new Posicao(7, 2));
-        tab.ColocarPeca(new Rei(tab, Cor.Branca), new Posicao(4, 4));
-        tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 6));
-        tab.ColocarPeca(new Torre(tab, Cor.Branca), new Posicao(5, 1));
+            while (!partida.Terminada)
+            {
+                Console.Clear();
+                Tela.ImprimirTela(partida.Tab!);
 
-        Tela.ImprimirTela(tab);
+                Console.Write("\nOrigem: ");
+                Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+                Console.Write("Destino: ");
+                Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+
+                partida.ExecutaMovimento(origem, destino);
+            }
+        }
+        catch (TabuleiroException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
