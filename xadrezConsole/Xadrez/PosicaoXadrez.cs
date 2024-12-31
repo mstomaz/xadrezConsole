@@ -1,4 +1,5 @@
-﻿using Tabuleiro;
+﻿using System.Diagnostics.Contracts;
+using Tabuleiro;
 
 namespace Xadrez;
 
