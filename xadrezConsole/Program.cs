@@ -13,10 +13,16 @@ public class Program
             while (!partida.Terminada)
             {
                 Console.Clear();
-                Tela.ImprimirTela(partida.Tab!);
+                Tela.ImprimirTela(partida.Tab);
 
                 Console.Write("\nOrigem: ");
                 Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+
+                bool[, ] posicoesPossiveis = partida.Tab.RetornarPeca(origem).MovimentosPossiveis();
+
+                Console.Clear();
+                Tela.ImprimirTela(partida.Tab, posicoesPossiveis, partida.Tab.RetornarPeca(origem));
+
                 Console.Write("Destino: ");
                 Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
 

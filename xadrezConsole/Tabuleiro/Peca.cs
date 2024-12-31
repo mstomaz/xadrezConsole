@@ -11,4 +11,8 @@ public abstract class Peca(Tabuleiro? tabuleiro, Cor cor)
     {
         QtdMovimentos++;
     }
+
+    protected abstract bool PodeMover(Posicao pos);
+
+    public abstract bool[,] MovimentosPossiveis();
 }
