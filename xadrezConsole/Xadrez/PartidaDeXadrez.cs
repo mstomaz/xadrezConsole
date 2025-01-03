@@ -114,6 +114,9 @@ public class PartidaDeXadrez
                 if (!movsPossiveis[i, j])
                     continue;
 
+                if (Tab.ExistePeca(new Posicao(i, j)))
+                    continue;
+
                 if (MovEntraraEmXeque(i, j, rei))
                 {
                     movsPossiveis[i, j] = false;
@@ -271,9 +274,15 @@ public class PartidaDeXadrez
         return true;
     }
 
-    public void ColocarNovaPeca(char coluna, short linha, Peca p)
+    private void ColocarNovaPeca(char coluna, short linha, Peca p)
     {
         Tab.ColocarPeca(p, new PosicaoXadrez(coluna, linha).ToPosicao());
+        _pecas.Add(p);
+    }
+
+    private void ColocarNovaPeca(int linha, int coluna, Peca p)
+    {
+        Tab.ColocarPeca(p, new Posicao(linha, coluna));
         _pecas.Add(p);
     }
 
@@ -282,9 +291,36 @@ public class PartidaDeXadrez
         ColocarNovaPeca(_posIni["KiW"][0], short.Parse(_posIni["KiW"][1] + ""), new Rei(Tab, Cor.Branca));
         ColocarNovaPeca(_posIni["ToW1"][0], short.Parse(_posIni["ToW1"][1] + ""), new Torre(Tab, Cor.Branca));
         ColocarNovaPeca(_posIni["ToW2"][0], short.Parse(_posIni["ToW2"][1] + ""), new Torre(Tab, Cor.Branca));
+        ColocarNovaPeca(_posIni["BiW1"][0], short.Parse(_posIni["BiW1"][1] + ""), new Bispo(Tab, Cor.Branca));
+        ColocarNovaPeca(_posIni["BiW2"][0], short.Parse(_posIni["BiW2"][1] + ""), new Bispo(Tab, Cor.Branca));
+        ColocarNovaPeca(_posIni["KnW1"][0], short.Parse(_posIni["KnW1"][1] + ""), new Cavalo(Tab, Cor.Branca));
+        ColocarNovaPeca(_posIni["KnW2"][0], short.Parse(_posIni["KnW2"][1] + ""), new Cavalo(Tab, Cor.Branca));
+        ColocarNovaPeca(_posIni["QuW"][0], short.Parse(_posIni["QuW"][1] + ""), new Rainha(Tab, Cor.Branca));
+        for (int i = 0; i < Tab.Linhas; i++)
+            for (int j = 0; j < Tab.Colunas; j++)
+            {
+                if (i == 6)
+                    ColocarNovaPeca(i, j, new Peao(Tab, Cor.Branca));
+                else
+                    break;
+            }
+
         ColocarNovaPeca(_posIni["KiB"][0], short.Parse(_posIni["KiB"][1] + ""), new Rei(Tab, Cor.Preta));
         ColocarNovaPeca(_posIni["ToB1"][0], short.Parse(_posIni["ToB1"][1] + ""), new Torre(Tab, Cor.Preta));
         ColocarNovaPeca(_posIni["ToB2"][0], short.Parse(_posIni["ToB2"][1] + ""), new Torre(Tab, Cor.Preta));
+        ColocarNovaPeca(_posIni["BiB1"][0], short.Parse(_posIni["BiB1"][1] + ""), new Bispo(Tab, Cor.Preta));
+        ColocarNovaPeca(_posIni["BiB2"][0], short.Parse(_posIni["BiB2"][1] + ""), new Bispo(Tab, Cor.Preta));
+        ColocarNovaPeca(_posIni["KnB1"][0], short.Parse(_posIni["KnB1"][1] + ""), new Cavalo(Tab, Cor.Preta));
+        ColocarNovaPeca(_posIni["KnB2"][0], short.Parse(_posIni["KnB2"][1] + ""), new Cavalo(Tab, Cor.Preta));
+        ColocarNovaPeca(_posIni["QuB"][0], short.Parse(_posIni["QuB"][1] + ""), new Rainha(Tab, Cor.Preta));
+        for (int i = 0; i < Tab.Linhas; i++)
+            for (int j = 0; j < Tab.Colunas; j++)
+            {
+                if (i == 1)
+                    ColocarNovaPeca(i, j, new Peao(Tab, Cor.Preta));
+                else
+                    break;
+            }
     }
 
 }

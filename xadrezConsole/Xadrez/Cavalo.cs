@@ -1,11 +1,12 @@
 ﻿using Tabuleiro;
+
 namespace Xadrez;
 
-public class Rei(Tabuleiro.Tabuleiro? tabuleiro, Cor cor) : Peca(tabuleiro, cor)
+public class Cavalo(Tabuleiro.Tabuleiro tabuleiro, Cor cor) : Peca(tabuleiro, cor)
 {
     public override string ToString()
     {
-        return "R";
+        return "C";
     }
 
     protected override bool PodeMover(Posicao pos)
@@ -19,43 +20,39 @@ public class Rei(Tabuleiro.Tabuleiro? tabuleiro, Cor cor) : Peca(tabuleiro, cor)
         bool[,] posicoesPossiveis = new bool[Tabuleiro!.Linhas, Tabuleiro.Colunas];
         Posicao pos = new Posicao(0, 0);
 
-        //Acima
-        pos.DefinirValores(Posicao!.Linha - 1, Posicao.Coluna);
+        //L para cima direita
+        pos.DefinirValores(Posicao!.Linha - 2, Posicao.Coluna + 1);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //NE
-        pos.DefinirValores(Posicao!.Linha - 1, Posicao.Coluna + 1);
+        //L para cima esquerda
+        pos.DefinirValores(Posicao!.Linha - 2, Posicao.Coluna - 1);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //Direita
-        pos.DefinirValores(Posicao!.Linha, Posicao.Coluna + 1);
+        //L para baixo direita
+        pos.DefinirValores(Posicao!.Linha + 2, Posicao.Coluna + 1);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //SE
-        pos.DefinirValores(Posicao!.Linha + 1, Posicao.Coluna + 1);
+        //L para baixo esquerda
+        pos.DefinirValores(Posicao!.Linha + 2, Posicao.Coluna - 1);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //Abaixo
-        pos.DefinirValores(Posicao!.Linha + 1, Posicao.Coluna);
+        pos.DefinirValores(Posicao!.Linha + 1, Posicao.Coluna - 2);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //SW
-        pos.DefinirValores(Posicao!.Linha + 1, Posicao.Coluna - 1);
+        pos.DefinirValores(Posicao!.Linha - 1, Posicao.Coluna - 2);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //Esquerda
-        pos.DefinirValores(Posicao!.Linha, Posicao.Coluna - 1);
+        pos.DefinirValores(Posicao!.Linha - 1, Posicao.Coluna + 2);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
-        //NW
-        pos.DefinirValores(Posicao!.Linha - 1, Posicao.Coluna - 1);
+        pos.DefinirValores(Posicao!.Linha + 1, Posicao.Coluna + 2);
         if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             posicoesPossiveis[pos.Linha, pos.Coluna] = true;
 
