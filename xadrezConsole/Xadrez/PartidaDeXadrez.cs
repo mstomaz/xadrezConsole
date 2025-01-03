@@ -87,6 +87,24 @@ public class PartidaDeXadrez
         if (pecaCapturada != null)
             _capturadas.Add(pecaCapturada);
 
+        if (p is Rei && destino.Coluna == origem.Coluna + 2)
+        {
+            Posicao origemTor = new Posicao(origem.Linha, origem.Coluna + 3);
+            Posicao destTor = new Posicao(origem.Linha, origem.Coluna + 1);
+            Peca T = Tab.RetirarPeca(origemTor)!;
+            T.IncrementarQtdMovimentos();
+            Tab.ColocarPeca(T, destTor);
+        }
+
+        if (p is Rei && destino.Coluna == origem.Coluna - 2)
+        {
+            Posicao origemTor = new Posicao(origem.Linha, origem.Coluna - 4);
+            Posicao destTor = new Posicao(origem.Linha, origem.Coluna - 1);
+            Peca T = Tab.RetirarPeca(origemTor)!;
+            T.IncrementarQtdMovimentos();
+            Tab.ColocarPeca(T, destTor);
+        }
+
         return pecaCapturada;
     }
 
@@ -101,6 +119,24 @@ public class PartidaDeXadrez
             _capturadas.Remove(capturada);
         }
         Tab.ColocarPeca(p, origem);
+
+        if (p is Rei && destino.Coluna == origem.Coluna + 2)
+        {
+            Posicao origemTor = new Posicao(origem.Linha, origem.Coluna + 3);
+            Posicao destTor = new Posicao(origem.Linha, origem.Coluna + 1);
+            Peca T = Tab.RetirarPeca(destTor)!;
+            T.DecrementarQtdMovimentos();
+            Tab.ColocarPeca(T, origemTor);
+        }
+
+        if (p is Rei && destino.Coluna == origem.Coluna - 2)
+        {
+            Posicao origemTor = new Posicao(origem.Linha, origem.Coluna - 4);
+            Posicao destTor = new Posicao(origem.Linha, origem.Coluna - 1);
+            Peca T = Tab.RetirarPeca(destTor)!;
+            T.DecrementarQtdMovimentos();
+            Tab.ColocarPeca(T, origemTor);
+        }
     }
 
     public void ValidarMovimento(Posicao origem, bool[,] movsPossiveis)
@@ -288,7 +324,7 @@ public class PartidaDeXadrez
 
     private void ColocarPecas()
     {
-        ColocarNovaPeca(_posIni["KiW"][0], short.Parse(_posIni["KiW"][1] + ""), new Rei(Tab, Cor.Branca));
+        ColocarNovaPeca(_posIni["KiW"][0], short.Parse(_posIni["KiW"][1] + ""), new Rei(Tab, Cor.Branca, this));
         ColocarNovaPeca(_posIni["ToW1"][0], short.Parse(_posIni["ToW1"][1] + ""), new Torre(Tab, Cor.Branca));
         ColocarNovaPeca(_posIni["ToW2"][0], short.Parse(_posIni["ToW2"][1] + ""), new Torre(Tab, Cor.Branca));
         ColocarNovaPeca(_posIni["BiW1"][0], short.Parse(_posIni["BiW1"][1] + ""), new Bispo(Tab, Cor.Branca));
@@ -305,7 +341,7 @@ public class PartidaDeXadrez
                     break;
             }
 
-        ColocarNovaPeca(_posIni["KiB"][0], short.Parse(_posIni["KiB"][1] + ""), new Rei(Tab, Cor.Preta));
+        ColocarNovaPeca(_posIni["KiB"][0], short.Parse(_posIni["KiB"][1] + ""), new Rei(Tab, Cor.Preta, this));
         ColocarNovaPeca(_posIni["ToB1"][0], short.Parse(_posIni["ToB1"][1] + ""), new Torre(Tab, Cor.Preta));
         ColocarNovaPeca(_posIni["ToB2"][0], short.Parse(_posIni["ToB2"][1] + ""), new Torre(Tab, Cor.Preta));
         ColocarNovaPeca(_posIni["BiB1"][0], short.Parse(_posIni["BiB1"][1] + ""), new Bispo(Tab, Cor.Preta));
