@@ -13,11 +13,19 @@ public class Tela
         ImprimirPecasCapturadas(partida);
         Console.WriteLine();
         Console.WriteLine("Turno: {0}", partida.TurnoGeral);
-        int turnoJogAtual = partida.JogadorAtual == Cor.Branca ? partida.TurnoJog1 : partida.TurnoJog2;
-        Console.WriteLine("Peças {0}s: turno {1}", partida.JogadorAtual, turnoJogAtual);
-        Console.WriteLine("Aguardando jogada...");
-        if (partida.Xeque)
-            Console.WriteLine("XEQUE");
+        if (!partida.Terminada)
+        {
+            int turnoJogAtual = partida.JogadorAtual == Cor.Branca ? partida.TurnoJog1 : partida.TurnoJog2;
+            Console.WriteLine("Peças {0}s: turno {1}", partida.JogadorAtual, turnoJogAtual);
+            Console.WriteLine("Aguardando jogada...");
+            if (partida.Xeque)
+                Console.WriteLine("XEQUE");
+        }
+        else
+        {
+            Console.WriteLine("XEQUEMATE!");
+            Console.WriteLine("Vencedor: {0}", partida.JogadorAtual);
+        }
     }
 
     private static void ImprimirPecasCapturadas(PartidaDeXadrez partida)

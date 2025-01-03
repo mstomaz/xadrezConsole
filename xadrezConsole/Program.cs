@@ -50,6 +50,8 @@ public class Program
                     } while (teclaEscolhida != ConsoleKey.Enter);
                 }
             }
+            Console.Clear();
+            Tela.ImprimirPartida(partida);
         }
         catch (TabuleiroException ex)
         {

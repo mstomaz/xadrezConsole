@@ -93,7 +93,6 @@ public class PartidaDeXadrez
     private void DesfazMovimento(Posicao origem, Posicao destino, Peca capturada)
     {
         Peca p = Tab.RetirarPeca(destino)!;
-        Tab.ColocarPeca(p, origem);
         p.DecrementarQtdMovimentos();
         
         if (capturada != null)
@@ -101,6 +100,7 @@ public class PartidaDeXadrez
             Tab.ColocarPeca(capturada, destino);
             _capturadas.Remove(capturada);
         }
+        Tab.ColocarPeca(p, origem);
     }
 
     public void ValidarMovimento(Posicao origem, bool[,] movsPossiveis)
@@ -114,7 +114,7 @@ public class PartidaDeXadrez
                 if (!movsPossiveis[i, j])
                     continue;
 
-                if (MovSimuladoInvalido(i, j, rei))
+                if (MovEntraraEmXeque(i, j, rei))
                 {
                     movsPossiveis[i, j] = false;
                 }
@@ -124,7 +124,7 @@ public class PartidaDeXadrez
         Tab.ColocarPeca(rei, origem);
     }
 
-    private bool MovSimuladoInvalido(int linha, int coluna, Peca p)
+    private bool MovEntraraEmXeque(int linha, int coluna, Peca p)
     {
         Posicao destino = new(linha, coluna);
         Tab.ColocarPeca(p, destino);
@@ -147,8 +147,13 @@ public class PartidaDeXadrez
         else
             Xeque = false;
 
-        _turnoGeral++;
-        MudaJogador();
+        if (TesteXequemate(Adversario(_jogadorAtual)))
+            Terminada = true;
+        else
+        {
+            _turnoGeral++;
+            MudaJogador();
+        }
     }
 
     private void MudaJogador()
@@ -240,6 +245,30 @@ public class PartidaDeXadrez
         }
 
         return false;
+    }
+
+    public bool TesteXequemate(Cor cor)
+    {
+        if (!EstaEmXeque(cor))
+            return false;
+
+        foreach (Peca p in PecasEmJogo(cor))
+        {
+            bool[,] movsPossiveis = p.MovimentosPossiveis();
+            for (int i = 0; i < Tab.Linhas; i++)
+                for (int j = 0; j < Tab.Colunas; j++)
+                    if (movsPossiveis[i, j])
+                    {
+                        Posicao origem = p.Posicao!;
+                        Posicao destino = new Posicao(i, j);
+                        Peca capturada = ExecutaMovimento(origem, destino);
+                        bool testeXeque = EstaEmXeque(cor);
+                        DesfazMovimento(origem, destino, capturada);
+                        if (!testeXeque) return false;
+                    }
+        }
+
+        return true;
     }
 
     public void ColocarNovaPeca(char coluna, short linha, Peca p)
