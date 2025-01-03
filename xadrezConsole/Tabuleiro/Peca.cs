@@ -12,6 +12,11 @@ public abstract class Peca(Tabuleiro? tabuleiro, Cor cor)
         QtdMovimentos++;
     }
 
+    public void DecrementarQtdMovimentos()
+    {
+        QtdMovimentos--;
+    }
+
     protected abstract bool PodeMover(Posicao pos);
 
     public bool ExisteMovimentoPossivel()

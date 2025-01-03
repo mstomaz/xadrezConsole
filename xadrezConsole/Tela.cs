@@ -16,6 +16,8 @@ public class Tela
         int turnoJogAtual = partida.JogadorAtual == Cor.Branca ? partida.TurnoJog1 : partida.TurnoJog2;
         Console.WriteLine("Peças {0}s: turno {1}", partida.JogadorAtual, turnoJogAtual);
         Console.WriteLine("Aguardando jogada...");
+        if (partida.Xeque)
+            Console.WriteLine("XEQUE");
     }
 
     private static void ImprimirPecasCapturadas(PartidaDeXadrez partida)
@@ -43,7 +45,6 @@ public class Tela
             contaPecas++;
         }
         Console.WriteLine(" ]");
-
     }
 
     public static void ImprimirTela(Tab.Tabuleiro tab)
@@ -60,7 +61,7 @@ public class Tela
         Console.WriteLine("  A B C D E F G H");
     }
 
-    public static void ImprimirTela(Tab.Tabuleiro tab, bool[, ] posicoesPossiveis, Peca pecaOrigem)
+    public static void ImprimirTela(Tab.Tabuleiro tab, bool[,] posicoesPossiveis, Peca pecaOrigem)
     {
         for (int i = 0; i < tab.Linhas; i++)
         {

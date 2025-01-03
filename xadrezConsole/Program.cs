@@ -22,6 +22,10 @@ public class Program
                     partida.ValidarPosicaoDeOrigem(origem);
 
                     bool[,] posicoesPossiveis = partida.Tab.RetornarPeca(origem).MovimentosPossiveis();
+                    if (partida.Tab.RetornarPeca(origem) is Rei)
+                    {
+                        partida.ValidarMovimento(origem, posicoesPossiveis);
+                    }
 
                     Console.Clear();
                     Tela.ImprimirTela(partida.Tab, posicoesPossiveis, partida.Tab.RetornarPeca(origem));
