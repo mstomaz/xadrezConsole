@@ -184,7 +184,7 @@ public class PartidaDeXadrez
     {
         if (Tab.RetornarPeca(destino) != null && Tab.RetornarPeca(origem).Cor == Tab.RetornarPeca(destino).Cor)
             throw new TabuleiroException("Nao e possivel tomar uma peca sua!");
-        if (!Tab.RetornarPeca(origem).PodeMoverPara(destino))
+        if (!Tab.RetornarPeca(origem).MovimentoPossivel(destino))
             throw new TabuleiroException("Posicao de destino invalida!");
     }
 

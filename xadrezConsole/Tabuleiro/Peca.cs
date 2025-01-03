@@ -30,7 +30,7 @@ public abstract class Peca(Tabuleiro? tabuleiro, Cor cor)
         return false;
     }
 
-    public bool PodeMoverPara(Posicao pos)
+    public bool MovimentoPossivel(Posicao pos)
     {
         return MovimentosPossiveis()[pos.Linha, pos.Coluna];
     }
