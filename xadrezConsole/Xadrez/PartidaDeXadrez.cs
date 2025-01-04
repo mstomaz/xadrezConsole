@@ -81,10 +81,6 @@ public class PartidaDeXadrez
     private Peca ExecutaMovimento(Posicao origem, Posicao destino)
     {
         Peca p = Tab.RetornarPeca(origem);
-        if (EstaEmXeque(_jogadorAtual) && p is not Rei)
-        {
-            throw new TabuleiroException("Voce esta em xeque. Mova seu rei!");
-        }
 
         p = Tab.RetirarPeca(origem)!;
         p.IncrementarQtdMovimentos();
