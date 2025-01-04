@@ -2,8 +2,10 @@
 
 namespace Xadrez;
 
-public class Peao(Tabuleiro.Tabuleiro tabuleiro, Cor cor) : Peca(tabuleiro, cor)
+public class Peao(Tabuleiro.Tabuleiro tabuleiro, Cor cor, PartidaDeXadrez partida) : Peca(tabuleiro, cor)
 {
+    private PartidaDeXadrez _partida = partida;
+
     public override string ToString()
     {
         return "P";
@@ -45,6 +47,18 @@ public class Peao(Tabuleiro.Tabuleiro tabuleiro, Cor cor) : Peca(tabuleiro, cor)
             pos.DefinirValores(Posicao!.Linha - 1, Posicao.Coluna - 1);
             if (Tabuleiro.PosicaoValida(pos) && ExisteAdversarioNaDiagonal(pos))
                 posicoesPossiveis[pos.Linha, pos.Coluna] = true;
+
+            //en passant
+            if (Posicao.Linha == 3)
+            {
+                Posicao esquerda = new(Posicao!.Linha, Posicao.Coluna - 1);
+                if (Tabuleiro.PosicaoValida(esquerda) && ExisteAdversarioNaDiagonal(esquerda) && Tabuleiro.RetornarPeca(esquerda) == _partida.VulneravelEnPassant)
+                    posicoesPossiveis[esquerda.Linha - 1, esquerda.Coluna] = true;
+
+                Posicao direita = new(Posicao!.Linha, Posicao.Coluna + 1);
+                if (Tabuleiro.PosicaoValida(direita) && ExisteAdversarioNaDiagonal(direita) && Tabuleiro.RetornarPeca(direita) == _partida.VulneravelEnPassant)
+                    posicoesPossiveis[direita.Linha - 1, direita.Coluna] = true;
+            }
         }
         else
         {
@@ -65,6 +79,18 @@ public class Peao(Tabuleiro.Tabuleiro tabuleiro, Cor cor) : Peca(tabuleiro, cor)
             pos.DefinirValores(Posicao!.Linha + 1, Posicao.Coluna - 1);
             if (Tabuleiro.PosicaoValida(pos) && ExisteAdversarioNaDiagonal(pos))
                 posicoesPossiveis[pos.Linha, pos.Coluna] = true;
+
+            //en passant
+            if (Posicao.Linha == 4)
+            {
+                Posicao esquerda = new(Posicao!.Linha, Posicao.Coluna - 1);
+                if (Tabuleiro.PosicaoValida(esquerda) && ExisteAdversarioNaDiagonal(esquerda) && Tabuleiro.RetornarPeca(esquerda) == _partida.VulneravelEnPassant)
+                    posicoesPossiveis[esquerda.Linha + 1, esquerda.Coluna] = true;
+
+                Posicao direita = new(Posicao!.Linha, Posicao.Coluna + 1);
+                if (Tabuleiro.PosicaoValida(direita) && ExisteAdversarioNaDiagonal(direita) && Tabuleiro.RetornarPeca(direita) == _partida.VulneravelEnPassant)
+                    posicoesPossiveis[direita.Linha + 1, direita.Coluna] = true;
+            }
         }
 
         return posicoesPossiveis;

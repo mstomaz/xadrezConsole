@@ -12,6 +12,7 @@ public class PartidaDeXadrez
     private HashSet<Peca> _pecas;
     private HashSet<Peca> _capturadas;
     private readonly Dictionary<string, string> _posIni;
+    private Peca? _vulneravelEnPassant;
 
     public PartidaDeXadrez()
     {
@@ -39,6 +40,7 @@ public class PartidaDeXadrez
         _turnoJog1 = 1;
         _turnoJog2 = 0;
         _jogadorAtual = Cor.Branca;
+        _vulneravelEnPassant = null;
         Xeque = false;
         Terminada = false;
         _pecas = [];
@@ -66,6 +68,11 @@ public class PartidaDeXadrez
     public Cor JogadorAtual
     {
         get => _jogadorAtual;
+    }
+
+    public Peca? VulneravelEnPassant
+    {
+        get => _vulneravelEnPassant;
     }
 
     public bool Terminada { get; private set; }
@@ -105,6 +112,19 @@ public class PartidaDeXadrez
             Tab.ColocarPeca(T, destTor);
         }
 
+        if (p is Peao)
+            if (origem.Coluna != destino.Coluna && pecaCapturada == null)
+            {
+                Posicao posPeao;
+                if (p.Cor == Cor.Branca)
+                    posPeao = new Posicao(destino.Linha + 1, destino.Coluna);
+                else
+                    posPeao = new Posicao(destino.Linha - 1, destino.Coluna);
+
+                pecaCapturada = Tab.RetirarPeca(posPeao);
+                _capturadas.Add(pecaCapturada!);
+            }
+
         return pecaCapturada;
     }
 
@@ -137,6 +157,18 @@ public class PartidaDeXadrez
             T.DecrementarQtdMovimentos();
             Tab.ColocarPeca(T, origemTor);
         }
+
+        if (p is Peao)
+            if (origem.Coluna != destino.Coluna && capturada == _vulneravelEnPassant)
+            {
+                Peca peao = Tab.RetirarPeca(destino)!;
+                Posicao posPeao;
+                if (p.Cor == Cor.Branca)
+                    posPeao = new Posicao(3, destino.Coluna);
+                else
+                    posPeao = new Posicao(4, destino.Coluna);
+                Tab.ColocarPeca(peao, posPeao);
+            }
     }
 
     public void ValidarMovimento(Posicao origem, bool[,] movsPossiveis)
@@ -193,6 +225,13 @@ public class PartidaDeXadrez
             _turnoGeral++;
             MudaJogador();
         }
+
+        //en passant
+        Peca p = Tab.RetornarPeca(destino);
+        if (p is Peao && (destino.Linha == origem.Linha - 2 || destino.Linha == origem.Linha + 2))
+            _vulneravelEnPassant = p;
+        else
+            _vulneravelEnPassant = null;
     }
 
     private void MudaJogador()
@@ -336,7 +375,7 @@ public class PartidaDeXadrez
             for (int j = 0; j < Tab.Colunas; j++)
             {
                 if (i == 6)
-                    ColocarNovaPeca(i, j, new Peao(Tab, Cor.Branca));
+                    ColocarNovaPeca(i, j, new Peao(Tab, Cor.Branca, this));
                 else
                     break;
             }
@@ -353,7 +392,7 @@ public class PartidaDeXadrez
             for (int j = 0; j < Tab.Colunas; j++)
             {
                 if (i == 1)
-                    ColocarNovaPeca(i, j, new Peao(Tab, Cor.Preta));
+                    ColocarNovaPeca(i, j, new Peao(Tab, Cor.Preta, this));
                 else
                     break;
             }
